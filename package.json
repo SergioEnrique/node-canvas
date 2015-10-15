@@ -21,11 +21,17 @@
   "homepage": "https://github.com/Automattic/node-canvas",
   "repository": "git://github.com/Automattic/node-canvas.git",
   "scripts": {
-    "test": "make test"
+    "install": "node-pre-gyp install --fallback-to-build"
+  },
+  "binary": {
+    "module_name": "canvas",
+    "module_path": "./build/Release",
+    "host": "https://raw.githubusercontent.com/eonarheim/node-canvas/master/dists"
   },
   "dependencies": {
+    "node-pre-gyp": "0.6.12",
     "nan": "^2.0.9"
-  },
+  },  
   "devDependencies": {
     "body-parser": "^1.13.3",
     "express": "^4.13.2",
