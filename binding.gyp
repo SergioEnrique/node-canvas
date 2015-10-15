@@ -10,6 +10,7 @@
       }
     }, { # 'OS!="win"'
       'variables': {
+        'depslinux%': './deps/linux',
         'with_jpeg%': '<!(./util/has_lib.sh jpeg)',
         'with_gif%': '<!(./util/has_lib.sh gif)',
         # disable pango as it causes issues with freetype.
@@ -33,6 +34,19 @@
               '<(GTK_Root)/bin/libfreetype-6.dll',
               '<(GTK_Root)/bin/libpng14-14.dll',
               '<(GTK_Root)/bin/zlib1.dll',
+            ]
+          }]
+        }, { # 'OS!="win"'
+	  'copies': [{
+            'destination': '<(PRODUCT_DIR)',
+            'files': [
+              '<(depslinux)/libcairo.so.2',
+              '<(depslinux)/libgif.so.4',
+              '<(depslinux)/libgobject-2.0.so.0',
+              '<(depslinux)/libjpeg.so.8',
+              '<(depslinux)/libpango-1.0.so.0',
+              '<(depslinux)/libpangocairo-1.0.so.0',
+              '<(depslinux)/libpng12.so.0',
             ]
           }]
         }]
