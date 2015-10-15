@@ -52,7 +52,7 @@
         'src/init.cc'
       ],
       'conditions': [
-        ['OS=="win"', {
+         ['OS=="win"', {
           'libraries': [
             '-l<(GTK_Root)/lib/cairo.lib',
             '-l<(GTK_Root)/lib/libpng.lib'
@@ -86,6 +86,9 @@
             }
           }
         }, { # 'OS!="win"'
+          'ldflags': [
+            '-Wl,-rpath \'-Wl,$$ORIGIN\'',
+          ],
           'libraries': [
             '<!@(pkg-config pixman-1 --libs)',
             '<!@(pkg-config cairo --libs)',
