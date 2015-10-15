@@ -18,6 +18,6 @@ benchmark:
 	@node benchmarks/run.js
 
 clean:
-	rm -fr build
+	rm -r build/Release/*
 
 .PHONY: test test-server benchmark clean

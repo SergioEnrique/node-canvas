@@ -26,7 +26,7 @@
   "binary": {
     "module_name": "canvas",
     "module_path": "./build/Release",
-    "host": "https://raw.githubusercontent.com/eonarheim/node-canvas/master/dists"
+    "host": "https://github.com/eonarheim/node-canvas/raw/master/dist"
   },
   "dependencies": {
     "node-pre-gyp": "0.6.12",
