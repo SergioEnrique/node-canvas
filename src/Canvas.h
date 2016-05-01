@@ -85,8 +85,8 @@ class Canvas: public Nan::ObjectWrap {
       EIO_ToBuffer(eio_req *req);
     static int EIO_AfterToBuffer(eio_req *req);
 #endif
-    static PangoWeight GetWeightFromCSSString(char *weight);
-    static PangoStyle GetStyleFromCSSString(char *style);
+    static PangoWeight GetWeightFromCSSString(const char *weight);
+    static PangoStyle GetStyleFromCSSString(const char *style);
     static PangoFontDescription* FindCustomFace(PangoFontDescription *desc);
 
     inline bool isPDF(){ return CANVAS_TYPE_PDF == type; }
