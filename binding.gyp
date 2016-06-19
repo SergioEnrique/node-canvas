@@ -1,5 +1,6 @@
 {
   'conditions': [
+
     ['OS=="win"', {
       'variables': {
         'GTK_Root%': 'C:/GTK', # Set the location of GTK all-in-one bundle
