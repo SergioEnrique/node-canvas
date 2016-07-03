@@ -85,9 +85,21 @@
           }
         }, { # 'OS!="win"'
           'libraries': [
-            '<!@(pkg-config pixman-1 --libs)',
-            '<!@(pkg-config cairo --libs)',
-            '<!@(pkg-config libpng --libs)'
+            '/usr/local/Cellar/freetype/2.6.2/lib/libfreetype.a',
+            '/usr/local/Cellar/libpng/1.6.21/lib/libpng16.a',
+            '/usr/local/Cellar/pixman/0.32.8/lib/libpixman-1.a',
+            '/usr/local/Cellar/cairo/1.14.6/lib/libcairo-gobject.a',
+            '/usr/local/Cellar/cairo/1.14.6/lib/libcairo.a',
+            '/usr/local/Cellar/pango/1.38.1/lib/libpango-1.0.a',
+            '/usr/local/Cellar/pango/1.38.1/lib/libpangocairo-1.0.a',
+            '/usr/local/Cellar/glib/2.46.2/lib/libglib-2.0.a',
+            '/usr/local/Cellar/glib/2.46.2/lib/libgobject-2.0.a',
+            '/usr/local/Cellar/glib/2.46.2/lib/libgio-2.0.a',
+            '/usr/local/Cellar/glib/2.46.2/lib/libgmodule-2.0.a',
+            '/usr/local/Cellar/glib/2.46.2/lib/libgthread-2.0.a',
+            '/usr/local/Cellar/libffi/3.0.13/lib/libffi.a',
+            '/usr/local/opt/gettext/lib/libintl.a',
+            '-framework CoreText'
           ],
           'include_dirs': [
             '<!@(pkg-config cairo --cflags-only-I | sed s/-I//g)',
