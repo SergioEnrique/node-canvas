@@ -1,4 +1,7 @@
 language: node_js
+os:
+- linux
+- osx
 node_js:
 - '0.8'
 - '0.10'
@@ -30,7 +33,7 @@ after_script:
 - npm run benchmark
 sudo: false
 before_deploy:
-  - sh zip_release.sh
+- sh zip_release.sh
 deploy:
   provider: releases
   skip_cleanup: true
