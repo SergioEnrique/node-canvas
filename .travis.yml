@@ -28,7 +28,7 @@ env:
 - CXX=g++-4.8
 before_install:
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew update && brew reinstall cairo libpng jpeg giflib; fi
-- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew link cairo && brew link libpng; fi
+- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew info libpng; fi 
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig; fi
 - if [[ $TRAVIS_NODE_VERSION == 0.8 ]]; then npm install -g npm@1.4.28; fi
 - npm explore npm -g -- npm install node-gyp@latest
