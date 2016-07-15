@@ -2,7 +2,7 @@ language: node_js
 os:
 - linux
 - osx
-osx_image: xcode7.3
+osx_image: xcode8 # has everything we need but cairo
 node_js:
 - '0.8'
 - '0.10'
@@ -44,5 +44,5 @@ deploy:
   file: canvas-*.tar.gz
   file_glob: true
   on:
-    branch: deploy-experiment
+    tags: true
     repo: chearon/node-canvas
