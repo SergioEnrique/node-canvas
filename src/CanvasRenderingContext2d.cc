@@ -10,6 +10,7 @@
 #include <limits>
 #include <vector>
 #include <algorithm>
+#include <glib.h>
 
 #include "Canvas.h"
 #include "Point.h"
