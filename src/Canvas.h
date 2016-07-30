@@ -40,7 +40,7 @@ typedef enum {
   CANVAS_TYPE_SVG
 } canvas_type_t;
 
-/**
+/*
  * FontFace describes a font file in terms of one PangoFontDescription that
  * will resolve to it and one that the user describes it as (like @font-face)
  */
@@ -87,7 +87,7 @@ class Canvas: public Nan::ObjectWrap {
 #endif
     static PangoWeight GetWeightFromCSSString(const char *weight);
     static PangoStyle GetStyleFromCSSString(const char *style);
-    static PangoFontDescription* FindCustomFace(PangoFontDescription *desc);
+    static PangoFontDescription *ResolveFontDescription(const PangoFontDescription *desc);
 
     inline bool isPDF(){ return CANVAS_TYPE_PDF == type; }
     inline bool isSVG(){ return CANVAS_TYPE_SVG == type; }

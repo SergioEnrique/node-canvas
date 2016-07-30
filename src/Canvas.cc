@@ -658,37 +658,30 @@ Canvas::GetWeightFromCSSString(const char *weight) {
 }
 
 /*
- * Tries to find a matching font given to registerFont
+ * Given a user description, return a description that will look up the
+ * font either from the system or @font-face
  */
 
 PangoFontDescription *
-Canvas::FindCustomFace(PangoFontDescription *desc) {
-  PangoFontDescription* best_match = NULL;
-  PangoFontDescription* best_match_target = NULL;
-  desc = pango_font_description_copy(desc); // will need to modify its family
+Canvas::ResolveFontDescription(const PangoFontDescription *desc) {
+  PangoFontDescription *ret = NULL;
+  PangoFontDescription *best_match = NULL;
+  PangoFontDescription *best_match_target = NULL;
 
   // One of the user-specified families could map to multiple SFNT family names
   // if someone registered two different fonts under the same family name.
   // https://drafts.csswg.org/css-fonts-3/#font-style-matching
   char **families = g_strsplit(pango_font_description_get_family(desc), ",", -1);
-  char *pango_family = NULL;
+  GString *resolved_families = g_string_new("");
 
   for (int i = 0; families[i]; ++i) {
+    GString *renamed_families = g_string_new("");
     std::vector<FontFace>::iterator it = _font_face_list.begin();
-    char *target_families = NULL;
-
-    pango_font_description_set_family(desc, families[i]);
 
     for (; it != _font_face_list.end(); ++it) {
       if (g_ascii_strcasecmp(families[i], pango_font_description_get_family(it->user_desc)) == 0) {
-        const char *target_family = pango_font_description_get_family(it->target_desc);
-        if (target_families) {
-          char *old_target_families = target_families;
-          target_families = g_strconcat(target_families, ",", target_family, NULL);
-          g_free(old_target_families);
-        } else {
-          target_families = g_strdup(target_family);
-        }
+        if (renamed_families->len) g_string_append(renamed_families, ",");
+        g_string_append(renamed_families, pango_font_description_get_family(it->target_desc));
 
         if (i == 0 && (best_match == NULL || pango_font_description_better_match(desc, best_match, it->user_desc))) {
           best_match = it->user_desc;
@@ -697,24 +690,16 @@ Canvas::FindCustomFace(PangoFontDescription *desc) {
       }
     }
 
-    if (target_families) {
-      if (pango_family) {
-        char *old_pango_family = pango_family;
-        pango_family = g_strconcat(pango_family, ",", target_families, NULL);
-        g_free(old_pango_family);
-      } else {
-        pango_family = g_strdup(target_families);
-      }
-    }
+    if (resolved_families->len) g_string_append(resolved_families, ",");
+    g_string_append(resolved_families, renamed_families->len ? renamed_families->str : families[i]);
+    g_string_free(renamed_families, true);
   }
 
+  ret = pango_font_description_copy(best_match_target ? best_match_target : desc);
+  pango_font_description_set_family_static(ret, resolved_families->str);
+
   g_strfreev(families);
-  pango_font_description_free(desc);
-
-  PangoFontDescription *ret = pango_font_description_copy(best_match_target);
-  if (pango_family) pango_font_description_set_family_static(ret, pango_family);
-
-  printf("%s\n", pango_font_description_to_string(ret));
+  g_string_free(resolved_families, false);
 
   return ret;
 }
