@@ -223,8 +223,15 @@ Context2d::~Context2d() {
 
 void
 Context2d::save() {
-  cairo_save(_context);
-  saveState();
+  if (stateno < CANVAS_MAX_STATES) {
+    cairo_save(_context);
+    states[++stateno] = (canvas_state_t *) malloc(sizeof(canvas_state_t));
+    memcpy(states[stateno], state, sizeof(canvas_state_t));
+#if HAVE_PANGO
+    states[stateno]->fontFamily = strndup(state->fontFamily, 100);
+#endif
+    state = states[stateno];
+  }
 }
 
 /*
@@ -233,42 +240,19 @@ Context2d::save() {
 
 void
 Context2d::restore() {
-  cairo_restore(_context);
-  restoreState();
-}
-
-/*
- * Save the current state.
- */
-
-void
-Context2d::saveState() {
-  if (stateno == CANVAS_MAX_STATES) return;
-  states[++stateno] = (canvas_state_t *) malloc(sizeof(canvas_state_t));
-  memcpy(states[stateno], state, sizeof(canvas_state_t));
+  if (stateno > 0) {
+    cairo_restore(_context);
+    // Olaf (2011-02-21): Free old state data
 #if HAVE_PANGO
-  states[stateno]->fontFamily = strndup(state->fontFamily, 100);
+    free(states[stateno]->fontFamily);
 #endif
-  state = states[stateno];
-}
-
-/*
- * Restore state.
- */
-
-void
-Context2d::restoreState() {
-  if (0 == stateno) return;
-  // Olaf (2011-02-21): Free old state data
+    free(states[stateno]);
+    states[stateno] = NULL;
+    state = states[--stateno];
 #if HAVE_PANGO
-  free(states[stateno]->fontFamily);
+    setFontFromState();
 #endif
-  free(states[stateno]);
-  states[stateno] = NULL;
-  state = states[--stateno];
-#if HAVE_PANGO
-  setFontFromState();
-#endif
+  }
 }
 
 /*
